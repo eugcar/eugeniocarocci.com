@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eugenio Carocci — Engineering Tech Lead & Senior Backend Software Engineer</title>
+  <meta name="description" content="Personal website, engineering brag document, and technical writing of Eugenio Carocci — Engineering Tech Lead & Senior Backend Software Engineer." />
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+          },
+          colors: {
+            paper: {
+              light: '#FAFAFA',
+              dark: '#0C0D0E',
+            },
+            surface: {
+              light: '#FFFFFF',
+              dark: '#141517',
+            },
+            ink: {
+              light: '#111827',
+              dark: '#F3F4F6',
+            },
+            muted: {
+              light: '#52525B',
+              dark: '#9CA3AF',
+            },
+            hairline: {
+              light: '#E4E4E7',
+              dark: '#26282C',
+            },
+            accent: {
+              light: '#0F766E',
+              dark: '#2DD4BF',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Initialize Theme Immediately to Avoid Flash -->
+  <script>
+    (function () {
+      const saved = localStorage.getItem('ec-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
+</head>
+<body class="bg-paper-light dark:bg-paper-dark text-ink-light dark:text-ink-dark font-sans antialiased selection:bg-teal-600 selection:text-white dark:selection:bg-teal-400 dark:selection:text-zinc-950 transition-colors duration-150">
+
+  <!-- Toast Notification -->
+  <div id="toast" role="status" aria-live="polite" class="fixed bottom-5 right-5 z-50 pointer-events-none opacity-0 translate-y-2 transition-all duration-200">
+    <div class="bg-zinc-900 dark:bg-zinc-100 text-zinc-50 dark:text-zinc-900 text-xs font-mono px-3.5 py-2.5 rounded-md shadow-lg border border-zinc-700 dark:border-zinc-300 flex items-center gap-2">
+      <span class="w-1.5 h-1.5 rounded-full bg-teal-400 dark:bg-teal-600"></span>
+      <span id="toast-message">Copied to clipboard</span>
+    </div>
+  </div>
+
+  <!-- Top Minimalist Navigation -->
+  <header class="sticky top-0 z-30 bg-paper-light/90 dark:bg-paper-dark/90 backdrop-blur-md border-b border-hairline-light dark:border-hairline-dark">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
+      <button onclick="navigateTo('about')" class="font-mono text-sm font-semibold tracking-tight text-ink-light dark:text-ink-dark hover:text-accent-light dark:hover:text-accent-dark transition-colors flex items-center gap-2 focus:outline-none">
+        <span class="text-accent-light dark:text-accent-dark">~/</span>eugcar
+      </button>
+
+      <nav aria-label="Primary Navigation" class="flex items-center gap-1 sm:gap-2 overflow-x-auto no-scrollbar">
+        <button data-nav="about" onclick="navigateTo('about')" class="nav-btn px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium transition-colors">About</button>
+        <button data-nav="experience" onclick="navigateTo('experience')" class="nav-btn px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium transition-colors">Experience</button>
+        <button data-nav="projects" onclick="navigateTo('projects')" class="nav-btn px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium transition-colors">Projects &amp; Brag</button>
+        <button data-nav="writing" onclick="navigateTo('writing')" class="nav-btn px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium transition-colors">Writing</button>
+        <button data-nav="contact" onclick="navigateTo('contact')" class="nav-btn px-2.5 py-1.5 rounded text-xs sm:text-sm font-medium transition-colors">Contact</button>
+
+        <div class="h-4 w-px bg-hairline-light dark:bg-hairline-dark mx-1"></div>
+
+        <!-- Theme Toggle -->
+        <button id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Dark or Light Mode" title="Toggle theme" class="p-2 rounded-md text-muted-light dark:text-muted-dark hover:text-ink-light dark:hover:text-ink-dark hover:bg-zinc-200/60 dark:hover:bg-zinc-800/60 transition-colors focus:outline-none">
+          <!-- Sun icon (shown in dark mode) -->
+          <svg id="icon-sun" class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+          </svg>
+          <!-- Moon icon (shown in light mode) -->
+          <svg id="icon-moon" class="w-4 h-4 block dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+
+    <!-- Persistent Compact Hero Header -->
+    <section id="hero-header" class="pb-8 mb-10 border-b border-hairline-light dark:border-hairline-dark">
+      <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2.5 mb-2">
+            <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-ink-light dark:text-ink-dark">
+              Eugenio Carocci
+            </h1>
+            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-mono bg-teal-50 dark:bg-teal-950/60 text-teal-800 dark:text-teal-300 border border-teal-200 dark:border-teal-800/80">
+              <span class="w-1.5 h-1.5 rounded-full bg-teal-600 dark:bg-teal-400"></span>
+              Rieti, Italy (Remote)
+            </span>
+          </div>
+          <p class="text-sm sm:text-base font-medium text-accent-light dark:text-accent-dark mb-3">
+            Engineering Tech Lead &amp; Senior Backend Software Engineer
+          </p>
+          <p class="text-sm sm:text-[15px] leading-relaxed text-muted-light dark:text-muted-dark max-w-2xl">
+            Software engineer seeking quality in everything I do. Sportive to the bone, passionate about music and cinema.
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Links Bar -->
+      <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-mono text-muted-light dark:text-muted-dark">
+        <a href="https://github.com/eugcar" target="_blank" rel="noopener noreferrer" class="hover:text-ink-light dark:hover:text-ink-dark underline decoration-hairline-light dark:decoration-hairline-dark underline-offset-4 transition-colors">
+          github.com/eugcar
+        </a>
+        <a href="https://www.linkedin.com/in/eugenio-carocci" target="_blank" rel="noopener noreferrer" class="hover:text-ink-light dark:hover:text-ink-dark underline decoration-hairline-light dark:decoration-hairline-dark underline-offset-4 transition-colors">
+          linkedin.com/in/eugenio-carocci
+        </a>
+        <a href="https://medium.com/@carocci-eugenio" target="_blank" rel="noopener noreferrer" class="hover:text-ink-light dark:hover:text-ink-dark underline decoration-hairline-light dark:decoration-hairline-dark underline-offset-4 transition-colors">
+          medium.com/@carocci-eugenio
+        </a>
+        <a href="https://github.com/eugcar/brag-document" target="_blank" rel="noopener noreferrer" class="hover:text-ink-light dark:hover:text-ink-dark underline decoration-hairline-light dark:decoration-hairline-dark underline-offset-4 transition-colors">
+          eugcar/brag-document
+        </a>
+        <button onclick="copyText('carocci.eugenio@gmail.com', 'Email copied to clipboard')" class="hover:text-accent-light dark:hover:text-accent-dark underline decoration-hairline-light dark:decoration-hairline-dark underline-offset-4 transition-colors cursor-pointer">
+          carocci.eugenio@gmail.com
+        </button>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- VIEW 1: ABOUT & SKILLS                                    -->
+    <!-- ========================================================= -->
+    <section id="view-about" class="view-section space-y-12">
+      <!-- Philosophy & Personal Note -->
+      <div class="space-y-4">
+        <h2 class="text-xs font-mono uppercase tracking-wider text-muted-light dark:text-muted-dark">01 / Overview &amp; Philosophy</h2>
+        <div class="space-y-3.5 text-[15px] leading-7 text-ink-light/90 dark:text-ink-dark/90">
+          <p>
+            I am an <strong class="font-semibold text-ink-light dark:text-ink-dark">Engineering Tech Lead &amp; Senior Backend Software Engineer</strong> with a decade of experience designing resilient distributed systems, modernizing monolithic platforms, and mentoring engineering teams.
+          </p>
+          <p>
+            My engineering approach centers on <strong class="font-semibold text-ink-light dark:text-ink-dark">Domain-Driven Design (DDD)</strong>, pragmatic observability, automated quality gates, and clear architectural documentation. Whether introducing Transactional Outbox relays for mission-critical clinical data or scaling high-throughput message consumers to 10M+ events per day, I optimize for maintainability and observable behavior in production.
+          </p>
+          <p class="text-muted-light dark:text-muted-dark">
+            Away from the terminal, I am sportive to the bone—training in CrossFit, running, and trekking through the mountains around Rieti. I also unwind by playing guitar and piano, cooking, watching movies, and reading.
+          </p>
+        </div>
+
+        <!-- Quick Navigation Prompts -->
+        <div class="pt-2 flex flex-wrap gap-3">
+          <button onclick="navigateTo('experience')" class="px-3.5 py-2 rounded-md text-xs font-mono bg-surface-light dark:bg-surface-dark border border-hairline-light dark:border-hairline-dark hover:border-accent-light dark:hover:border-accent-dark transition-colors">
+            View Career Timeline &rarr;
+          </button>
+          <button onclick="navigateTo('projects')" class="px-3.5 py-2 rounded-md text-xs font-mono bg-surface-light dark:bg-surface-dark border border-hairline-light dark:border-hairline-dark hover:border-accent-light dark:hover:border-accent-dark transition-colors">
+            Explore Brag Case Studies &rarr;
+          </button>
+          <button onclick="navigateTo('writing')" class="px-3.5 py-2 rounded-md text-xs font-mono bg-surface-light dark:bg-surface-dark border border-hairline-light dark:border-hairline-dark hover:border-accent-light dark:hover:border-accent-dark transition-colors">
+            Read Technical Articles &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- Technical Stack Grid -->
+      <div class="space-y-4">
+        <h2 class="text-xs font-mono uppercase tracking-wider text-muted-light dark:text-muted-dark">02 / Technical Stack</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="p-4 rounded-lg bg-surface-light dark:bg-surface-dark border border-hairline-light dark:border-hairline-dark">
+            <h3 class="text-xs font-mono font-semibold text-accent-light dark:text-accent-dark mb-2.5">Languages &amp; Frameworks</h3>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">PHP</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">Java</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">Python</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">Symfony</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">Laminas</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">Vue.js</span>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-lg bg-surface-light dark:bg-surface-dark border border-hairline-light dark:border-hairline-dark">
+            <h3 class="text-xs font-mono font-semibold text-accent-light dark:text-accent-dark mb-2.5">Cloud &amp; Messaging</h3>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">AWS</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">Azure</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">Scaleway</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">CloudAMQP</span>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-lg bg-surface-light dark:bg-surface-dark border border-hairline-light dark:border-hairline-dark">
+            <h3 class="text-xs font-mono font-semibold text-accent-light dark:text-accent-dark mb-2.5">Data &amp; Storage</h3>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">MySQL</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">MariaDB</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">MongoDB</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">SQL</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">Redis</span>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-lg bg-surface-light dark:bg-surface-dark border border-hairline-light dark:border-hairline-dark">
+            <h3 class="text-xs font-mono font-semibold text-accent-light dark:text-accent-dark mb-2.5">SDLC &amp; DevOps</h3>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">Docker</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">Ansible</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">Bitbucket</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">GitHub</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">Composer</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">Maven</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">Jenkins</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">Nexus</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">Vagrant</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">Git</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">SVN</span>
+              <span class="px-2 py-0.5 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 border border-hairline-light dark:border-hairline-dark">Mercurial</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Certifications -->
+      <div class="space-y-4">
+        <h2 class="text-xs font-mono uppercase tracking-wider text-muted-light dark:text-muted-dark">03 / Certifications</h2>
+        <div class="divide-y divide-hairline-light dark:divide-hairline-dark border border-hairline-light dark:border-hairline-dark rounded-lg bg-surface-light dark:bg-surface-dark">
+          <div class="px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <span class="text-sm font-medium">AI Academy – Master in Prompt Engineering</span>
+            <span class="text-xs font-mono text-muted-light dark:text-muted-dark">Mar 2024</span>
+          </div>
+          <div class="px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <span class="text-sm font-medium">Azure Fundamentals</span>
+            <span class="text-xs font-mono text-muted-light dark:text-muted-dark">Mar 2023</span>
+          </div>
+          <div class="px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <span class="text-sm font-medium">AWS Developer – Associate</span>
+            <span class="text-xs font-mono text-muted-light dark:text-muted-dark">Mar 2021</span>
+          </div>
+          <div class="px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <span class="text-sm font-medium">AWS Solutions Architect – Associate</span>
+            <span class="text-xs font-mono text-muted-light dark:text-muted-dark">Jul 2019</span>
+          </div>
+          <div class="px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <span class="text-sm font-medium">Oracle Certified Professional Java SE 8</span>
+            <span class="text-xs font-mono text-muted-light dark:text-muted-dark">Oct 2017</span>
+          </div>
+          <div class="px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <span class="text-sm font-medium">Oracle Certified Associate Java SE 8</span>
+            <span class="text-xs font-mono text-muted-light dark:text-muted-dark">Mar 2017</span>
+          </div>
+          <div class="px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <span class="text-sm font-medium">CCNA Exploration: Network Fundamentals</span>
+            <span class="text-xs font-mono text-muted-light dark:text-muted-dark">Jun 2013</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Education & Languages -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="md:col-span-2 space-y-4">
+          <h2 class="text-xs font-mono uppercase tracking-wider text-muted-light dark:text-muted-dark">04 / Education</h2>
+          <div class="space-y-3">
+            <div class="p-4 rounded-lg bg-surface-light dark:bg-surface-dark border border-hairline-light dark:border-hairline-dark">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
+                <h3 class="text-sm font-semibold">Master of Computer Engineering</h3>
+                <span class="text-xs font-mono text-muted-light dark:text-muted-dark">Sep 2013 – Mar 2016</span>
+              </div>
+              <p class="text-xs text-muted-light dark:text-muted-dark">Università degli studi dell'Aquila · <span class="font-mono text-accent-light dark:text-accent-dark font-medium">Grade: 110 cum Laude</span></p>
+            </div>
+
+            <div class="p-4 rounded-lg bg-surface-light dark:bg-surface-dark border border-hairline-light dark:border-hairline-dark">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
+                <h3 class="text-sm font-semibold">Bachelor of Computer Engineering</h3>
+                <span class="text-xs font-mono text-muted-light dark:text-muted-dark">Sep 2010 – Sep 2013</span>
+              </div>
+              <p class="text-xs text-muted-light dark:text-muted-dark">Università degli studi dell'Aquila · <span class="font-mono text-accent-light dark:text-accent-dark font-medium">Grade: 108/110</span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <h2 class="text-xs font-mono uppercase tracking-wider text-muted-light dark:text-muted-dark">05 / Languages &amp; Interests</h2>
+          <div class="p-4 rounded-lg bg-surface-light dark:bg-surface-dark border border-hairline-light dark:border-hairline-dark space-y-4">
+            <div>
+              <h3 class="text-xs font-mono font-semibold text-accent-light dark:text-accent-dark mb-1.5">Languages</h3>
+              <ul class="text-xs space-y-1 text-muted-light dark:text-muted-dark">
+                <li><strong class="text-ink-light dark:text-ink-dark font-medium">Italian:</strong> Mother tongue</li>
+                <li><strong class="text-ink-light dark:text-ink-dark font-medium">English:</strong> Good proficiency</li>
+              </ul>
+            </div>
+            <div class="border-t border-hairline-light dark:border-hairline-dark pt-3">
+              <h3 class="text-xs font-mono font-semibold text-accent-light dark:text-accent-dark mb-1.5">Off-Clock</h3>
+              <p class="text-xs leading-relaxed text-muted-light dark:text-muted-dark">
+                CrossFit, running, trekking, playing guitar &amp; piano, cooking, cinema, reading.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- VIEW 2: EXPERIENCE TIMELINE                               -->
+    <!-- ========================================================= -->
+    <section id="view-experience" class="view-section hidden space-y-8">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+        <div>
+          <h2 class="text-xs font-mono uppercase tracking-wider text-muted-light dark:text-muted-dark mb-1">Career History</h2>
+          <p class="text-sm text-muted-light dark:text-muted-dark">10+ years building backend architectures, distributed messaging systems, and developer tooling.</p>
+        </div>
+        <a href="https://github.com/eugcar/brag-document" target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-accent-light dark:text-accent-dark hover:underline">
+          performance-reviews-log &nearr;
+        </a>
+      </div>
+
+      <div class="relative border-l border-hairline-light dark:border-hairline-dark ml-2.5 space-y-10">
+        
+        <!-- Role 1: Castor -->
+        <article class="relative pl-6">
+          <span class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-accent-light dark:bg-accent-dark ring-4 ring-paper-light dark:ring-paper-dark"></span>
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-1">
+            <h3 class="text-base font-bold text-ink-light dark:text-ink-dark">Castor <span class="font-normal text-xs font-mono text-muted-light dark:text-muted-dark ml-1">· Remote</span></h3>
+            <span class="text-xs font-mono text-accent-light dark:text-accent-dark font-medium">Nov 2021 – Present</span>
+          </div>
+          
+          <!-- Progression Sub-roles -->
+          <div class="mb-3 space-y-1">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-sm font-semibold text-ink-light dark:text-ink-dark">Engineering Tech Lead</span>
+              <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-teal-50 dark:bg-teal-950/60 text-teal-800 dark:text-teal-300 border border-teal-200 dark:border-teal-800/80">Jan 2026 – Present</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-xs font-medium text-muted-light dark:text-muted-dark">Senior Backend Software Engineer</span>
+              <span class="text-[11px] font-mono text-muted-light dark:text-muted-dark">(Nov 2021 – Dec 2025)</span>
+            </div>
+          </div>
+
+          <ul class="space-y-2 text-sm leading-relaxed text-ink-light/90 dark:text-ink-dark/90 list-disc pl-4 marker:text-muted-light dark:marker:text-muted-dark">
+            <li>Promoted to <strong>Engineering Tech Lead</strong> in January 2026 following consecutive <em>"Exceeding Expectations"</em> performance reviews (2022–2025).</li>
+            <li>Improved application observability to simplify extracting telemetry and identifying runtime behaviors across clinical data systems.</li>
+            <li>Actively drove the adoption of <strong>Domain-Driven Design (DDD)</strong> across engineering teams, decoupling legacy modules into clear bounded contexts.</li>
+            <li>Continuously enhanced core application performance, throughput, and reliability (including Transactional Outbox relays and study creation optimizations).</li>
+            <li>Hosted knowledge-sharing sessions as <strong>Backend Guild Coordinator</strong>; active member of the Engineering Book Club, Support, and On-Call teams.</li>
+          </ul>
+        </article>
+
+        <!-- Role 2: Pubtech -->
+        <article class="relative pl-6">
+          <span class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-zinc-400 dark:bg-zinc-600 ring-4 ring-paper-light dark:ring-paper-dark"></span>
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-1">
+            <h3 class="text-base font-bold text-ink-light dark:text-ink-dark">Pubtech <span class="font-normal text-xs font-mono text-muted-light dark:text-muted-dark ml-1">· Remote</span></h3>
+            <span class="text-xs font-mono text-muted-light dark:text-muted-dark">Aug 2020 – Oct 2021</span>
+          </div>
+          <p class="text-sm font-semibold text-muted-light dark:text-muted-dark mb-3">Senior Backend Software Engineer</p>
+          <ul class="space-y-2 text-sm leading-relaxed text-ink-light/90 dark:text-ink-dark/90 list-disc pl-4 marker:text-muted-light dark:marker:text-muted-dark">
+            <li>Built a high-throughput message processing pipeline handling <strong>~10M messages/day</strong> powered by CloudAMQP for real-time ad data ingestion.</li>
+            <li>Migrated business-critical applications to Docker-based deployments across <strong>AWS</strong> and <strong>Scaleway</strong> cloud infrastructure.</li>
+            <li>Elevated Developer Experience (DX) with static analysis, linting tools, automated test suites, and continuous integration flows.</li>
+            <li>Introduced <strong>Netdata</strong> for real-time production observability and actively mentored less-experienced colleagues.</li>
+          </ul>
+        </article>
+
+        <!-- Role 3: eLearnSecurity -->
+        <article class="relative pl-6">
+          <span class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-zinc-400 dark:bg-zinc-600 ring-4 ring-paper-light dark:ring-paper-dark"></span>
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-1">
+            <h3 class="text-base font-bold text-ink-light dark:text-ink-dark">eLearnSecurity <span class="font-normal text-xs font-mono text-muted-light dark:text-muted-dark ml-1">· Remote</span></h3>
+            <span class="text-xs font-mono text-muted-light dark:text-muted-dark">Feb 2019 – Aug 2020</span>
+          </div>
+          <p class="text-sm font-semibold text-muted-light dark:text-muted-dark mb-3">Backend Software Engineer</p>
+          <ul class="space-y-2 text-sm leading-relaxed text-ink-light/90 dark:text-ink-dark/90 list-disc pl-4 marker:text-muted-light dark:marker:text-muted-dark">
+            <li>Standardized local development environments with Docker and introduced automated Bitbucket CI/CD pipelines.</li>
+            <li>Migrated core applications from <strong>Symfony Framework 2.8 to 3.4</strong> and authored technical engineering articles on Medium.</li>
+          </ul>
+        </article>
+
+        <!-- Role 4: Gruppo Sistematica -->
+        <article class="relative pl-6">
+          <span class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-zinc-400 dark:bg-zinc-600 ring-4 ring-paper-light dark:ring-paper-dark"></span>
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-1">
+            <h3 class="text-base font-bold text-ink-light dark:text-ink-dark">Gruppo Sistematica <span class="font-normal text-xs font-mono text-muted-light dark:text-muted-dark ml-1">· Terni, Italy</span></h3>
+            <span class="text-xs font-mono text-muted-light dark:text-muted-dark">Feb 2018 – Jan 2019</span>
+          </div>
+          <p class="text-sm font-semibold text-muted-light dark:text-muted-dark mb-3">Backend Software Engineer</p>
+          <ul class="space-y-2 text-sm leading-relaxed text-ink-light/90 dark:text-ink-dark/90 list-disc pl-4 marker:text-muted-light dark:marker:text-muted-dark">
+            <li>Engineered automated Continuous Integration flows across multiple enterprise projects using <strong>Maven, Jenkins, and Nexus</strong>.</li>
+          </ul>
+        </article>
+
+        <!-- Role 5: Everis Italia -->
+        <article class="relative pl-6">
+          <span class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-zinc-400 dark:bg-zinc-600 ring-4 ring-paper-light dark:ring-paper-dark"></span>
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-1">
+            <h3 class="text-base font-bold text-ink-light dark:text-ink-dark">Everis Italia <span class="font-normal text-xs font-mono text-muted-light dark:text-muted-dark ml-1">· Rome, Italy</span></h3>
+            <span class="text-xs font-mono text-muted-light dark:text-muted-dark">Apr 2016 – Jan 2018</span>
+          </div>
+          <p class="text-sm font-semibold text-muted-light dark:text-muted-dark mb-3">Backend Software Engineer</p>
+          <ul class="space-y-2 text-sm leading-relaxed text-ink-light/90 dark:text-ink-dark/90 list-disc pl-4 marker:text-muted-light dark:marker:text-muted-dark">
+            <li>Built and maintained enterprise CRM components on the <strong>Amdocs 8</strong> framework and improved deployment automation tooling.</li>
+          </ul>
+        </article>
+
+        <!-- Role 6: pEvolution -->
+        <article class="relative pl-6">
+          <span class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-zinc-400 dark:bg-zinc-600 ring-4 ring-paper-light dark:ring-paper-dark"></span>
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-1">
+            <h3 class="text-base font-bold text-ink-light dark:text-ink-dark">pEvolution <span class="font-normal text-xs font-mono text-muted-light dark:text-muted-dark ml-1">· Rome, Italy</span></h3>
+            <span class="text-xs font-mono text-muted-light dark:text-muted-dark">Jan 2016 – Feb 2016</span>
+          </div>
+          <p class="text-sm font-semibold text-muted-light dark:text-muted-dark mb-3">Software Engineering Internship</p>
+          <ul class="space-y-2 text-sm leading-relaxed text-ink-light/90 dark:text-ink-dark/90 list-disc pl-4 marker:text-muted-light dark:marker:text-muted-dark">
+            <li>Implemented a lightweight cryptographic security scheme on Wireless Sensor Networks (WSN) using <strong>Atmel</strong> hardware and <strong>TinyOS</strong>.</li>
+          </ul>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- VIEW 3: PROJECTS & BRAG DOCUMENT CASE STUDIES             -->
+    <!-- ========================================================= -->
+    <section id="view-projects" class="view-section hidden space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+        <div>
+          <h2 class="text-xs font-mono uppercase tracking-wider text-muted-light dark:text-muted-dark mb-1">Selected Engineering Case Studies</h2>
+          <p class="text-sm text-muted-light dark:text-muted-dark">
+            Architectural notes &amp; project logs sourced from <a href="https://github.com/eugcar/brag-document" target="_blank" rel="noopener noreferrer" class="font-mono text-accent-light dark:text-accent-dark hover:underline">eugcar/brag-document</a>. Click any entry to inspect the full report.
+          </p>
+        </div>
+      </div>
+
+      <!-- Case Study Grid -->
+      <div id="projects-grid" class="grid grid-cols-1 gap-4">
+        <!-- Populated dynamically via JS -->
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- VIEW 4: BLOG / WRITING + LIVE MARKDOWN EDITOR             -->
+    <!-- ========================================================= -->
+    <section id="view-writing" class="view-section hidden space-y-6">
+      
+      <!-- Article List & Controls View -->
+      <div id="writing-list-view" class="space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 class="text-xs font-mono uppercase tracking-wider text-muted-light dark:text-muted-dark mb-1">Writing &amp; Publications</h2>
+            <p class="text-sm text-muted-light dark:text-muted-dark">Static Markdown articles, peer-reviewed research, and Medium engineering notes.</p>
+          </div>
+          <button onclick="toggleMarkdownComposer(true)" class="self-start sm:self-auto px-3 py-1.5 rounded-md text-xs font-mono bg-zinc-900 dark:bg-zinc-100 text-zinc-50 dark:text-zinc-900 hover:opacity-90 transition-opacity flex items-center gap-1.5">
+            <span>+ Draft Markdown Post</span>
+          </button>
+        </div>
+
+        <!-- Tag Filter Bar -->
+        <div id="tag-filters" class="flex flex-wrap items-center gap-1.5 border-b border-hairline-light dark:border-hairline-dark pb-4">
+          <button onclick="filterArticles('All')" data-tag="All" class="tag-btn px-2.5 py-1 rounded text-xs font-mono transition-colors">All</button>
+          <button onclick="filterArticles('Architecture')" data-tag="Architecture" class="tag-btn px-2.5 py-1 rounded text-xs font-mono transition-colors">Architecture</button>
+          <button onclick="filterArticles('Backend')" data-tag="Backend" class="tag-btn px-2.5 py-1 rounded text-xs font-mono transition-colors">Backend</button>
+          <button onclick="filterArticles('DevOps')" data-tag="DevOps" class="tag-btn px-2.5 py-1 rounded text-xs font-mono transition-colors">DevOps</button>
+          <button onclick="filterArticles('Research')" data-tag="Research" class="tag-btn px-2.5 py-1 rounded text-xs font-mono transition-colors">Research</button>
+        </div>
+
+        <!-- Articles Feed -->
+        <div id="articles-list" class="divide-y divide-hairline-light dark:divide-hairline-dark">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- External Medium Archive Callout -->
+        <div class="p-4 rounded-lg bg-surface-light dark:bg-surface-dark border border-hairline-light dark:border-hairline-dark flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <p class="text-sm font-medium">Looking for earlier posts on Symfony, Docker &amp; Backend Guild talks?</p>
+            <p class="text-xs text-muted-light dark:text-muted-dark mt-0.5">Read the full archive on Medium (@carocci-eugenio).</p>
+          </div>
+          <a href="https://medium.com/@carocci-eugenio" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-md text-xs font-mono border border-hairline-light dark:border-hairline-dark hover:border-accent-light dark:hover:border-accent-dark transition-colors shrink-0">
+            Open Medium &nearr;
+          </a>
+        </div>
+      </div>
+
+      <!-- Full-Page Article Reader View (like overreacted.io) -->
+      <article id="writing-reader-view" class="hidden space-y-6">
+        <button onclick="closeArticleReader()" class="inline-flex items-center gap-1.5 text-xs font-mono text-muted-light dark:text-muted-dark hover:text-accent-light dark:hover:text-accent-dark transition-colors">
+          &larr; Back to all writing
+        </button>
+
+        <header class="space-y-2 pb-6 border-b border-hairline-light dark:border-hairline-dark">
+          <div class="flex flex-wrap items-center gap-2 text-xs font-mono text-muted-light dark:text-muted-dark">
+            <time id="reader-date"></time>
+            <span>&middot;</span>
+            <span id="reader-readtime"></span>
+            <span>&middot;</span>
+            <span id="reader-tag" class="text-accent-light dark:text-accent-dark"></span>
+          </div>
+          <h1 id="reader-title" class="text-2xl sm:text-3xl font-bold tracking-tight leading-snug"></h1>
+          <p id="reader-subtitle" class="text-sm text-muted-light dark:text-muted-dark"></p>
+        </header>
+
+        <div id="reader-body" class="space-y-4 text-[15px] leading-7 text-ink-light/95 dark:text-ink-dark/95">
+          <!-- Rendered article HTML -->
+        </div>
+      </article>
+
+      <!-- Browser-Based Markdown Post Composer & Exporter (Zero-Backend Workflow) -->
+      <div id="markdown-composer-view" class="hidden space-y-5">
+        <div class="flex items-center justify-between border-b border-hairline-light dark:border-hairline-dark pb-4">
+          <div>
+            <h3 class="text-base font-bold">Static Markdown Post Composer</h3>
+            <p class="text-xs text-muted-light dark:text-muted-dark">Draft a post locally with YAML frontmatter, preview the rendered HTML, and download the <code class="font-mono">.md</code> file for Git.</p>
+          </div>
+          <button onclick="toggleMarkdownComposer(false)" class="px-2.5 py-1.5 rounded text-xs font-mono border border-hairline-light dark:border-hairline-dark hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50">
+            Close
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Editor Pane -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <label for="md-input" class="text-xs font-mono text-muted-light dark:text-muted-dark">post.md (Input)</label>
+              <button onclick="downloadMarkdownFile()" class="text-xs font-mono text-accent-light dark:text-accent-dark hover:underline">
+                Download .md &darr;
+              </button>
+            </div>
+            <textarea id="md-input" oninput="renderLiveMarkdown()" rows="16" class="w-full p-3.5 rounded-lg font-mono text-xs leading-relaxed bg-surface-light dark:bg-surface-dark border border-hairline-light dark:border-hairline-dark focus:outline-none focus:border-accent-light dark:focus:border-accent-dark">---
+title: "Observability-First Backend Engineering"
+date: "2026-11-24"
+tag: "Architecture"
+summary: "How structured telemetry and correlation IDs cut incident resolution time."
+---
+
+# Observability-First Backend Engineering
+
+When running distributed workers and message consumers, logs alone are rarely enough.
+
+## Key Principles
+- Propagate a **Correlation ID** across HTTP and AMQP boundaries.
+- Emit structured JSON logs with domain context (`study_id`, `event_type`).
+- Measure queue lag and consumer throughput continuously.
+
+```php
+$logger->info('Outbox message dispatched', [
+    'event_id' => $event->id(),
+    'aggregate' => 'ClinicalStudy',
+]);
+```</textarea>
+          </div>
+
+          <!-- Live Preview Pane -->
+          <div class="space-y-2">
+            <span class="block text-xs font-mono text-muted-light dark:text-muted-dark">Rendered Preview</span>
+            <div id="md-preview" class="h-[346px] overflow-y-auto p-4 rounded-lg bg-surface-light dark:bg-surface-dark border border-hairline-light dark:border-hairline-dark text-sm leading-relaxed space-y-3">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- VIEW 5: ZERO-BACKEND CONTACT                              -->
+    <!-- ========================================================= -->
+    <section id="view-contact" class="view-section hidden space-y-8">
+      <div>
+        <h2 class="text-xs font-mono uppercase tracking-wider text-muted-light dark:text-muted-dark mb-1">Get in Touch</h2>
+        <p class="text-sm text-muted-light dark:text-muted-dark">
+          Want to discuss backend architecture, engineering leadership, or remote opportunities? Reach out directly—no middlemen or bloated tracking scripts.
+        </p>
+      </div>
+
+      <!-- Direct Contact Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="p-4 rounded-lg bg-surface-light dark:bg-surface-dark border border-hairline-light dark:border-hairline-dark flex flex-col justify-between gap-3">
+          <div>
+            <span class="text-xs font-mono text-muted-light dark:text-muted-dark">Direct Email</span>
+            <p class="text-sm font-mono font-medium mt-1 break-all">carocci.eugenio@gmail.com</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="copyText('carocci.eugenio@gmail.com', 'Email address copied!')" class="px-3 py-1.5 rounded text-xs font-mono bg-zinc-900 dark:bg-zinc-100 text-zinc-50 dark:text-zinc-900 hover:opacity-90 transition-opacity">
+              Copy Email
+            </button>
+            <a href="mailto:carocci.eugenio@gmail.com?subject=Hello%20Eugenio" class="px-3 py-1.5 rounded text-xs font-mono border border-hairline-light dark:border-hairline-dark hover:border-accent-light dark:hover:border-accent-dark transition-colors">
+              Open Mail App &nearr;
+            </a>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-surface-light dark:bg-surface-dark border border-hairline-light dark:border-hairline-dark flex flex-col justify-between gap-3">
+          <div>
+            <span class="text-xs font-mono text-muted-light dark:text-muted-dark">Phone &amp; Location</span>
+            <p class="text-sm font-mono font-medium mt-1">(+39) 340 7893501</p>
+            <p class="text-xs text-muted-light dark:text-muted-dark mt-0.5">Rieti, Lazio, Italy (CET / Remote)</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="copyText('+39 340 7893501', 'Phone number copied!')" class="px-3 py-1.5 rounded text-xs font-mono border border-hairline-light dark:border-hairline-dark hover:border-accent-light dark:hover:border-accent-dark transition-colors">
+              Copy Phone
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Serverless Contact Form (Pre-wired for Web3Forms / Formspree with Instant Static Preview) -->
+      <div class="p-5 sm:p-6 rounded-lg bg-surface-light dark:bg-surface-dark border border-hairline-light dark:border-hairline-dark space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+          <h3 class="text-sm font-semibold">Send a Quick Note</h3>
+          <span class="text-[11px] font-mono text-muted-light dark:text-muted-dark">Zero-backend static form (Formspree / mailto fallback)</span>
+        </div>
+
+        <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="sender-name" class="block text-xs font-mono text-muted-light dark:text-muted-dark mb-1.5">Your Name</label>
+              <input id="sender-name" name="name" type="text" required placeholder="Jane Doe" class="w-full px-3 py-2 rounded-md text-sm bg-paper-light dark:bg-paper-dark border border-hairline-light dark:border-hairline-dark focus:outline-none focus:border-accent-light dark:focus:border-accent-dark" />
+            </div>
+            <div>
+              <label for="sender-email" class="block text-xs font-mono text-muted-light dark:text-muted-dark mb-1.5">Your Email</label>
+              <input id="sender-email" name="email" type="email" required placeholder="jane@company.com" class="w-full px-3 py-2 rounded-md text-sm bg-paper-light dark:bg-paper-dark border border-hairline-light dark:border-hairline-dark focus:outline-none focus:border-accent-light dark:focus:border-accent-dark" />
+            </div>
+          </div>
+
+          <div>
+            <label for="sender-message" class="block text-xs font-mono text-muted-light dark:text-muted-dark mb-1.5">Message</label>
+            <textarea id="sender-message" name="message" rows="4" required placeholder="Hi Eugenio, I read your notes on the Transactional Outbox pattern..." class="w-full px-3 py-2 rounded-md text-sm bg-paper-light dark:bg-paper-dark border border-hairline-light dark:border-hairline-dark focus:outline-none focus:border-accent-light dark:focus:border-accent-dark"></textarea>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <button type="submit" class="px-4 py-2 rounded-md text-xs font-mono font-medium bg-accent-light dark:bg-accent-dark text-white dark:text-zinc-950 hover:opacity-90 transition-opacity">
+              Send Message &rarr;
+            </button>
+            <span id="form-status" class="text-xs font-mono text-muted-light dark:text-muted-dark"></span>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Minimalist Footer -->
+  <footer class="max-w-3xl mx-auto px-4 sm:px-6 py-8 border-t border-hairline-light dark:border-hairline-dark flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono text-muted-light dark:text-muted-dark">
+    <span>&copy; <span id="year"></span> Eugenio Carocci · Static HTML/JS, zero backend.</span>
+    <div class="flex items-center gap-4">
+      <a href="https://github.com/eugcar" target="_blank" rel="noopener noreferrer" class="hover:text-ink-light dark:hover:text-ink-dark">GitHub</a>
+      <a href="https://www.linkedin.com/in/eugenio-carocci" target="_blank" rel="noopener noreferrer" class="hover:text-ink-light dark:hover:text-ink-dark">LinkedIn</a>
+      <a href="https://medium.com/@carocci-eugenio" target="_blank" rel="noopener noreferrer" class="hover:text-ink-light dark:hover:text-ink-dark">Medium</a>
+    </div>
+  </footer>
+
+  <!-- ========================================================= -->
+  <!-- CASE STUDY MARKDOWN READER MODAL / DRAWER                 -->
+  <!-- ========================================================= -->
+  <div id="case-study-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" class="fixed inset-0 z-40 hidden">
+    <!-- Backdrop -->
+    <div onclick="closeCaseStudyModal()" class="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity"></div>
+
+    <!-- Drawer Panel -->
+    <div class="fixed inset-y-0 right-0 max-w-2xl w-full bg-surface-light dark:bg-surface-dark border-l border-hairline-light dark:border-hairline-dark shadow-2xl flex flex-col z-50">
+      <!-- Modal Header -->
+      <div class="px-5 py-4 border-b border-hairline-light dark:border-hairline-dark flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="text-xs font-mono px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-muted-light dark:text-muted-dark truncate" id="modal-filename"></span>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <a id="modal-github-link" href="#" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded text-xs font-mono border border-hairline-light dark:border-hairline-dark hover:border-accent-light dark:hover:border-accent-dark transition-colors">
+            GitHub Source &nearr;
+          </a>
+          <button onclick="closeCaseStudyModal()" aria-label="Close modal" class="p-1.5 rounded text-muted-light dark:text-muted-dark hover:text-ink-light dark:hover:text-ink-dark hover:bg-zinc-100 dark:hover:bg-zinc-800">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Content -->
+      <div class="p-6 overflow-y-auto space-y-6 flex-1">
+        <div>
+          <div class="flex flex-wrap items-center gap-2 text-xs font-mono text-accent-light dark:text-accent-dark mb-1.5">
+            <span id="modal-company"></span>
+            <span>&middot;</span>
+            <span id="modal-date"></span>
+          </div>
+          <h2 id="modal-title" class="text-xl sm:text-2xl font-bold tracking-tight"></h2>
+        </div>
+
+        <div class="space-y-4 text-sm leading-relaxed">
+          <div class="p-4 rounded-lg bg-paper-light dark:bg-paper-dark border border-hairline-light dark:border-hairline-dark space-y-1.5">
+            <h3 class="text-xs font-mono uppercase tracking-wider text-muted-light dark:text-muted-dark">Project Overview</h3>
+            <p id="modal-overview" class="text-ink-light/90 dark:text-ink-dark/90"></p>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="text-xs font-mono uppercase tracking-wider text-muted-light dark:text-muted-dark">Role &amp; Architecture</h3>
+            <ul id="modal-architecture" class="list-disc pl-5 space-y-1.5 text-ink-light/90 dark:text-ink-dark/90 marker:text-accent-light dark:marker:text-accent-dark"></ul>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="text-xs font-mono uppercase tracking-wider text-muted-light dark:text-muted-dark">Measured Impact</h3>
+            <ul id="modal-impact" class="list-disc pl-5 space-y-1.5 text-ink-light/90 dark:text-ink-dark/90 marker:text-accent-light dark:marker:text-accent-dark"></ul>
+          </div>
+
+          <div class="pt-2">
+            <h3 class="text-xs font-mono uppercase tracking-wider text-muted-light dark:text-muted-dark mb-2">Technologies &amp; Patterns</h3>
+            <div id="modal-tags" class="flex flex-wrap gap-1.5"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- APPLICATION DATA & LOGIC                                  -->
+  <!-- ========================================================= -->
+  <script>
+    // Set Footer Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ---------------------------------------------------------
+    // 1. STRUCTURED DATA (Brag Document Case Studies)
+    // ---------------------------------------------------------
+    const CASE_STUDIES = [
+      {
+        id: 'outbox-relay',
+        title: 'Outbox Relay Architecture',
+        company: 'Castor CDMS',
+        date: 'Oct 2025',
+        filename: '2025-10-castor-cdms-outbox-relay.md',
+        githubUrl: 'https://github.com/eugcar/brag-document/blob/main/projects/2025-10-castor-cdms-outbox-relay.md',
+        summary: 'Reliable event-driven messaging across clinical domain boundaries using the Transactional Outbox pattern.',
+        overview: 'In clinical data management systems, dual-writing to a relational database and an external message broker risks silent data drift if a broker publish fails mid-transaction. We designed and implemented a dedicated Transactional Outbox relay mechanism to guarantee at-least-once delivery for domain events.',
+        architecture: [
+          'Persisted domain events atomically within the same local SQL transaction as the core clinical entity mutations.',
+          'Engineered a background relay worker with idempotency keys, exponential backoff retries, and dead-letter alerting.',
+          'Instrumented structured telemetry and metrics to monitor relay lag and consumer throughput in real time.'
+        ],
+        impact: [
+          'Eliminated dual-write inconsistencies between core database state and downstream event consumers.',
+          'Provided a reusable, domain-agnostic event publishing foundation adopted across multiple bounded contexts.'
+        ],
+        tags: ['Transactional Outbox', 'DDD', 'PHP / Symfony', 'MySQL', 'Event-Driven Architecture', 'Observability']
+      },
+      {
+        id: 'form-sync-report',
+        title: 'Form Sync Data Impact Report',
+        company: 'Castor CDMS',
+        date: 'Jul 2024',
+        filename: '2024-07-castor-cdms-form-sync-data-impact-report.md',
+        githubUrl: 'https://github.com/eugcar/brag-document/blob/main/projects/2024-07-castor-cdms-form-sync-data-impact-report.md',
+        summary: 'Automated data integrity auditing and pre-flight impact reporting for clinical study form synchronization.',
+        overview: 'Updating shared electronic Case Report Form (eCRF) definitions across active clinical studies can inadvertently alter validation rules or existing participant data structures. Built an automated data impact analyzer to surface breaking changes before synchronization executes.',
+        architecture: [
+          'Designed a domain diffing engine comparing source and target form schemas, field dependencies, and validation constraints.',
+          'Generated structured impact reports categorizing destructive vs. non-destructive mutations prior to commit.',
+          'Decoupled reporting generation from synchronous HTTP request lifecycles for large multi-center studies.'
+        ],
+        impact: [
+          'Prevented accidental clinical data loss during complex mid-study form updates.',
+          'Reduced manual verification overhead for study builders and customer support teams.'
+        ],
+        tags: ['Data Integrity', 'Domain-Driven Design', 'Auditability', 'PHP', 'SQL']
+      },
+      {
+        id: 'study-creation-opt',
+        title: 'Study Creation Flow Optimization',
+        company: 'Castor CDMS',
+        date: 'May 2024',
+        filename: '2024-05-castor-cdms-study-creation-flow-optimization.md',
+        githubUrl: 'https://github.com/eugcar/brag-document/blob/main/projects/2024-05-castor-cdms-study-creation-flow-optimization.md',
+        summary: 'Performance and domain refactoring of the clinical study initialization workflow.',
+        overview: 'Initializing new clinical studies involves provisioning default roles, permissions, metadata templates, and audit trails. Over time, organic feature additions turned this flow into a slow, tightly coupled bottleneck.',
+        architecture: [
+          'Profiled database query patterns and eliminated redundant N+1 writes during study bootstrapping.',
+          'Refactored procedural initialization steps into explicit, testable domain services.',
+          'Added granular timing instrumentation to track p95 and p99 study creation latency.'
+        ],
+        impact: [
+          'Significantly reduced study provisioning latency and database lock contention.',
+          'Improved code clarity and test coverage, making future onboarding extensions safer to ship.'
+        ],
+        tags: ['Performance Optimization', 'Refactoring', 'MySQL', 'Profiling', 'Clean Architecture']
+      },
+      {
+        id: 'event-based-sdv',
+        title: 'Event-Based Source Data Verification Area',
+        company: 'Castor CDMS',
+        date: 'Jun 2023',
+        filename: '2023-06-castor-cdms-health-dashboard-event-based-source-data-verification-area.md',
+        githubUrl: 'https://github.com/eugcar/brag-document/blob/main/projects/2023-06-castor-cdms-health-dashboard-event-based-source-data-verification-area.md',
+        summary: 'Extending the Study Health Dashboard with real-time, event-driven Source Data Verification (SDV) tracking.',
+        overview: 'Clinical monitors rely on Source Data Verification (SDV) metrics to track regulatory audit readiness. Legacy polling queries struggled to compute SDV completion rates on large datasets.',
+        architecture: [
+          'Transitioned SDV state aggregation to an event-driven projection model updated whenever field verification statuses change.',
+          'Exposed dedicated read-optimized query endpoints powering the Study Health Dashboard.',
+          'Ensured strict audit-trail compliance in line with clinical trial regulatory standards.'
+        ],
+        impact: [
+          'Delivered near-instant SDV progress visibility on the Study Health Dashboard without heavy analytical queries.',
+          'Empowered clinical operations teams to spot verification bottlenecks early.'
+        ],
+        tags: ['CQRS / Read Models', 'Event-Driven', 'Clinical Compliance', 'Backend']
+      },
+      {
+        id: 'participant-esignature',
+        title: 'Participant e-Signature & Study Health Dashboard',
+        company: 'Castor CDMS',
+        date: 'Feb – May 2022',
+        filename: '2022-05-castor-cdms-participant-signature.md',
+        githubUrl: 'https://github.com/eugcar/brag-document/blob/main/projects/2022-05-castor-cdms-participant-signature.md',
+        summary: 'Core clinical compliance e-Signature workflows and real-time study monitoring foundations.',
+        overview: 'Delivered two foundational capabilities for Castor CDMS: compliant electronic participant signatures and the initial architecture of the Study Health Dashboard.',
+        architecture: [
+          'Implemented tamper-evident e-Signature verification flows binding cryptographic audit records to participant consent forms.',
+          'Designed modular backend aggregators for the Study Health Dashboard to surface enrollment and data-entry health.'
+        ],
+        impact: [
+          'Enabled compliant remote participant sign-offs across decentralized clinical trials.',
+          'Established the architectural blueprint for subsequent health dashboard modules.'
+        ],
+        tags: ['Security & Compliance', 'Audit Trail', 'PHP / Symfony', 'Vue.js']
+      },
+      {
+        id: 'pubtech-ad-ingestion',
+        title: 'High-Throughput Ad Data Ingestion (~10M msg/day)',
+        company: 'Pubtech',
+        date: 'Mar 2021',
+        filename: '2021-03-pubtech-ad-data-consumption.md',
+        githubUrl: 'https://github.com/eugcar/brag-document/blob/main/projects/2021-03-pubtech-ad-data-consumption.md',
+        summary: 'Real-time CloudAMQP consumer architecture processing ~10 million daily advertising telemetry events.',
+        overview: 'Real-time programmatic ad analytics required ingesting, normalizing, and persisting roughly 10 million daily events without dropping spikes during peak traffic hours.',
+        architecture: [
+          'Architected horizontally scalable AMQP consumer workers backed by CloudAMQP with prefetch tuning and batch database upserts.',
+          'Containerized worker deployments on Docker across AWS and Scaleway, monitored via Netdata.',
+          'Built graceful shutdown handlers and dead-letter queues to guarantee zero message loss during deployments.'
+        ],
+        impact: [
+          'Sustained ~10M messages/day throughput with predictable memory footprint and sub-second queue drain times.',
+          'Cut infrastructure troubleshooting time via Netdata real-time metrics and automated CI checks.'
+        ],
+        tags: ['CloudAMQP / RabbitMQ', 'High Throughput', 'Docker', 'AWS & Scaleway', 'Netdata']
+      }
+    ];
+
+    // ---------------------------------------------------------
+    // 2. STRUCTURED DATA (Blog Articles & Publications)
+    // ---------------------------------------------------------
+    const ARTICLES = [
+      {
+        id: 'outbox-ddd-legacy-php',
+        title: 'Applying the Transactional Outbox Pattern & Domain-Driven Design in Legacy PHP Monoliths',
+        subtitle: 'How to decouple bounded contexts and guarantee reliable event delivery without rewriting your entire stack from scratch.',
+        date: '2025-11-12',
+        readTime: '6 min read',
+        tag: 'Architecture',
+        externalUrl: null,
+        content: `
+          <p>When a monolithic application grows over a decade, its database schema often becomes the primary integration layer. Different modules read and write to the same tables, and side effects—like sending notifications, updating read models, or syncing external services—get tangled inside core business transactions.</p>
+          <h2 class="text-lg font-bold pt-2">The Dual-Write Trap</h2>
+          <p>A common first step toward decoupling is publishing an event to RabbitMQ or Kafka right after saving an entity to MySQL. However, if the database commit succeeds and the broker publish fails (or vice versa), your system enters an inconsistent state that is notoriously hard to debug.</p>
+          <pre class="p-4 rounded-lg bg-zinc-900 text-zinc-100 font-mono text-xs overflow-x-auto leading-relaxed"><code>// Atomic persistence of state + domain event
+$connection->beginTransaction();
+try {
+    $studyRepository->save($study);
+    $outboxRepository->append(
+        OutboxMessage::record($study->releaseEvents())
+    );
+    $connection->commit();
+} catch (Throwable $e) {
+    $connection->rollBack();
+    throw $e;
+}</code></pre>
+          <h2 class="text-lg font-bold pt-2">Why Outbox Fits Pragmatic DDD</h2>
+          <p>By storing serialized domain events in an <code>outbox_messages</code> table inside the exact same ACID transaction, you guarantee atomicity. A lightweight relay worker then polls or tails uncommitted rows, publishes them to the broker with an idempotency key, and marks them dispatched.</p>
+          <ul class="list-disc pl-5 space-y-1.5">
+            <li><strong>Zero lost events:</strong> Broker downtime merely pauses the relay; messages wait safely in SQL.</li>
+            <li><strong>Incremental adoption:</strong> You can introduce bounded contexts one aggregate at a time.</li>
+            <li><strong>Observable lag:</strong> Monitoring <code>COUNT(*) WHERE dispatched_at IS NULL</code> gives an immediate health signal.</li>
+          </ul>
+        `
+      },
+      {
+        id: 'scaling-cloudamqp-10m',
+        title: 'Lessons from Processing 10 Million Daily Messages with CloudAMQP',
+        subtitle: 'Prefetch tuning, batch persistence, and graceful worker restarts in high-throughput consumer pipelines.',
+        date: '2021-06-18',
+        readTime: '5 min read',
+        tag: 'Backend',
+        externalUrl: null,
+        content: `
+          <p>Handling ~10 million daily events in real time rarely fails because of average load—it fails during sudden traffic bursts or ungraceful container restarts.</p>
+          <h2 class="text-lg font-bold pt-2">1. Tune Consumer Prefetch (QoS)</h2>
+          <p>Leaving AMQP prefetch unlimited causes a single fast worker to hoard thousands of unacknowledged messages in RAM, starving sibling consumers and risking OOM kills. Setting a bounded prefetch count (e.g., 50–100 messages) balanced memory consumption with network round-trips.</p>
+          <h2 class="text-lg font-bold pt-2">2. Batch Writes Instead of Per-Message Inserts</h2>
+          <p>Writing 10M individual <code>INSERT</code> statements per day creates unnecessary IOPS pressure. Buffering messages in memory up to a fixed batch size or time window (e.g., 100 messages or 500ms) before acknowledging the batch to AMQP increased database throughput by an order of magnitude.</p>
+          <h2 class="text-lg font-bold pt-2">3. Trap SIGTERM for Zero-Drop Deploys</h2>
+          <p>In Dockerized environments, orchestrators send <code>SIGTERM</code> before killing containers. Installing signal handlers (<code>pcntl_signal</code>) ensures a worker finishes flushing its current batch and cleanly closes its AMQP channel before exiting.</p>
+        `
+      },
+      {
+        id: 'docker-dx-symfony-migrations',
+        title: 'Standardizing Developer Experience: Docker Environments & Symfony Migrations',
+        subtitle: 'Eliminating "works on my machine" across multi-service teams and upgrading legacy Symfony 2.8 stacks safely.',
+        date: '2020-05-10',
+        readTime: '4 min read',
+        tag: 'DevOps',
+        externalUrl: 'https://medium.com/@carocci-eugenio',
+        content: `
+          <p>Onboarding a new backend engineer shouldn't take three days of local PHP extension debugging. Standardized Docker Compose environments paired with automated CI static analysis pipelines ensure every pull request runs against identical runtime versions.</p>
+          <p>When migrating legacy applications from <strong>Symfony 2.8 to 3.4</strong>, decoupling framework-specific service locators into explicit constructor dependency injection and enforcing automated regression suites turned a risky big-bang upgrade into predictable incremental releases.</p>
+          <p class="pt-2"><a href="https://medium.com/@carocci-eugenio" target="_blank" rel="noopener noreferrer" class="font-mono text-xs text-accent-light dark:text-accent-dark underline">Read more of Eugenio's engineering posts on Medium &nearr;</a></p>
+        `
+      },
+      {
+        id: 'landslide-hazard-paper',
+        title: 'Ranking the buildings over developed large geographic area according to their exposure to the landslide hazard',
+        subtitle: 'Published in European Journal of Geography · Vol. 7, Number 3:6 (September 25, 2015)',
+        date: '2015-09-25',
+        readTime: 'Peer-Reviewed Paper',
+        tag: 'Research',
+        externalUrl: null,
+        content: `
+          <div class="p-4 rounded-lg bg-surface-light dark:bg-surface-dark border border-hairline-light dark:border-hairline-dark font-mono text-xs space-y-1">
+            <div><strong>Publication:</strong> European Journal of Geography</div>
+            <div><strong>Volume / Issue:</strong> Vol. 7, Number 3:6</div>
+            <div><strong>Date:</strong> 25 September 2015</div>
+            <div><strong>Author:</strong> Eugenio Carocci et al.</div>
+          </div>
+          <h2 class="text-lg font-bold pt-2">Abstract &amp; Summary</h2>
+          <p>This peer-reviewed research presents a spatial data processing and algorithmic ranking methodology designed to assess and prioritize buildings across large developed geographic regions based on their physical exposure to landslide hazards.</p>
+          <p>By combining geospatial terrain layers, infrastructure footprints, and hazard susceptibility models, the approach provides civil protection agencies and urban planners with an objective, scalable risk-ranking index to guide mitigation investments.</p>
+        `
+      }
+    ];
+
+    // ---------------------------------------------------------
+    // 3. NAVIGATION & VIEW ROUTING
+    // ---------------------------------------------------------
+    function navigateTo(viewName) {
+      // Hide all views
+      document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+      
+      // Show target view
+      const target = document.getElementById(`view-${viewName}`);
+      if (target) target.classList.remove('hidden');
+
+      // Update active nav button styles
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        const isActive = btn.dataset.nav === viewName;
+        if (isActive) {
+          btn.classList.add('bg-zinc-200/80', 'dark:bg-zinc-800', 'text-ink-light', 'dark:text-ink-dark');
+          btn.classList.remove('text-muted-light', 'dark:text-muted-dark');
+        } else {
+          btn.classList.remove('bg-zinc-200/80', 'dark:bg-zinc-800', 'text-ink-light', 'dark:text-ink-dark');
+          btn.classList.add('text-muted-light', 'dark:text-muted-dark');
+        }
+      });
+
+      // Reset writing sub-views if navigating to writing
+      if (viewName === 'writing') {
+        closeArticleReader();
+        toggleMarkdownComposer(false);
+      }
+
+      // Update URL hash cleanly without jumping
+      history.replaceState(null, '', `#${viewName}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ---------------------------------------------------------
+    // 4. DARK / LIGHT THEME TOGGLE
+    // ---------------------------------------------------------
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.classList.toggle('dark');
+      localStorage.setItem('ec-theme', isDark ? 'dark' : 'light');
+    }
+
+    // ---------------------------------------------------------
+    // 5. RENDER PROJECTS & CASE STUDY MODAL
+    // ---------------------------------------------------------
+    function renderProjects() {
+      const grid = document.getElementById('projects-grid');
+      grid.innerHTML = CASE_STUDIES.map(proj => `
+        <article onclick="openCaseStudyModal('${proj.id}')" class="group cursor-pointer p-4 sm:p-5 rounded-lg bg-surface-light dark:bg-surface-dark border border-hairline-light dark:border-hairline-dark hover:border-accent-light dark:hover:border-accent-dark transition-all">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1.5">
+            <div class="flex items-center gap-2 text-xs font-mono text-accent-light dark:text-accent-dark">
+              <span>${proj.company}</span>
+              <span>&middot;</span>
+              <span>${proj.date}</span>
+            </div>
+            <span class="text-[11px] font-mono text-muted-light dark:text-muted-dark group-hover:text-ink-light dark:group-hover:text-ink-dark transition-colors">
+              ${proj.filename} &rarr;
+            </span>
+          </div>
+          <h3 class="text-base font-bold text-ink-light dark:text-ink-dark group-hover:text-accent-light dark:group-hover:text-accent-dark transition-colors mb-1.5">
+            ${proj.title}
+          </h3>
+          <p class="text-sm text-muted-light dark:text-muted-dark leading-relaxed mb-3">
+            ${proj.summary}
+          </p>
+          <div class="flex flex-wrap gap-1.5">
+            ${proj.tags.map(t => `<span class="px-2 py-0.5 text-[11px] font-mono rounded bg-zinc-100 dark:bg-zinc-800/80 text-muted-light dark:text-muted-dark">${t}</span>`).join('')}
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function openCaseStudyModal(id) {
+      const proj = CASE_STUDIES.find(p => p.id === id);
+      if (!proj) return;
+
+      document.getElementById('modal-filename').textContent = proj.filename;
+      document.getElementById('modal-github-link').href = proj.githubUrl;
+      document.getElementById('modal-company').textContent = proj.company;
+      document.getElementById('modal-date').textContent = proj.date;
+      document.getElementById('modal-title').textContent = proj.title;
+      document.getElementById('modal-overview').textContent = proj.overview;
+
+      document.getElementById('modal-architecture').innerHTML = proj.architecture
+        .map(item => `<li>${item}</li>`).join('');
+      document.getElementById('modal-impact').innerHTML = proj.impact
+        .map(item => `<li>${item}</li>`).join('');
+      document.getElementById('modal-tags').innerHTML = proj.tags
+        .map(t => `<span class="px-2.5 py-1 text-xs font-mono rounded bg-zinc-100 dark:bg-zinc-800 border border-hairline-light dark:border-hairline-dark">${t}</span>`).join('');
+
+      document.getElementById('case-study-modal').classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function closeCaseStudyModal() {
+      document.getElementById('case-study-modal').classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeCaseStudyModal();
+    });
+
+    // ---------------------------------------------------------
+    // 6. BLOG / WRITING ENGINE & MARKDOWN COMPOSER
+    // ---------------------------------------------------------
+    let currentTag = 'All';
+
+    function filterArticles(tag) {
+      currentTag = tag;
+      document.querySelectorAll('.tag-btn').forEach(btn => {
+        if (btn.dataset.tag === tag) {
+          btn.classList.add('bg-zinc-900', 'dark:bg-zinc-100', 'text-zinc-50', 'dark:text-zinc-900');
+          btn.classList.remove('text-muted-light', 'dark:text-muted-dark');
+        } else {
+          btn.classList.remove('bg-zinc-900', 'dark:bg-zinc-100', 'text-zinc-50', 'dark:text-zinc-900');
+          btn.classList.add('text-muted-light', 'dark:text-muted-dark');
+        }
+      });
+      renderArticles();
+    }
+
+    function renderArticles() {
+      const container = document.getElementById('articles-list');
+      const filtered = currentTag === 'All'
+        ? ARTICLES
+        : ARTICLES.filter(a => a.tag === currentTag);
+
+      container.innerHTML = filtered.map(article => `
+        <article class="py-5 first:pt-2">
+          <div class="flex flex-wrap items-center gap-2 text-xs font-mono text-muted-light dark:text-muted-dark mb-1.5">
+            <time>${article.date}</time>
+            <span>&middot;</span>
+            <span>${article.readTime}</span>
+            <span>&middot;</span>
+            <span class="text-accent-light dark:text-accent-dark">${article.tag}</span>
+          </div>
+          <h3 onclick="openArticleReader('${article.id}')" class="cursor-pointer text-base sm:text-lg font-bold text-ink-light dark:text-ink-dark hover:text-accent-light dark:hover:text-accent-dark transition-colors mb-1.5">
+            ${article.title}
+          </h3>
+          <p class="text-sm text-muted-light dark:text-muted-dark leading-relaxed mb-2.5">
+            ${article.subtitle}
+          </p>
+          <button onclick="openArticleReader('${article.id}')" class="text-xs font-mono text-accent-light dark:text-accent-dark hover:underline">
+            Read article &rarr;
+          </button>
+        </article>
+      `).join('');
+    }
+
+    function openArticleReader(id) {
+      const article = ARTICLES.find(a => a.id === id);
+      if (!article) return;
+
+      document.getElementById('reader-date').textContent = article.date;
+      document.getElementById('reader-readtime').textContent = article.readTime;
+      document.getElementById('reader-tag').textContent = article.tag;
+      document.getElementById('reader-title').textContent = article.title;
+      document.getElementById('reader-subtitle').textContent = article.subtitle;
+      document.getElementById('reader-body').innerHTML = article.content;
+
+      document.getElementById('writing-list-view').classList.add('hidden');
+      document.getElementById('markdown-composer-view').classList.add('hidden');
+      document.getElementById('writing-reader-view').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function closeArticleReader() {
+      document.getElementById('writing-reader-view').classList.add('hidden');
+      document.getElementById('writing-list-view').classList.remove('hidden');
+    }
+
+    function toggleMarkdownComposer(show) {
+      if (show) {
+        document.getElementById('writing-list-view').classList.add('hidden');
+        document.getElementById('writing-reader-view').classList.add('hidden');
+        document.getElementById('markdown-composer-view').classList.remove('hidden');
+        renderLiveMarkdown();
+      } else {
+        document.getElementById('markdown-composer-view').classList.add('hidden');
+        document.getElementById('writing-list-view').classList.remove('hidden');
+      }
+    }
+
+    // Lightweight zero-dependency Markdown preview parser
+    function renderLiveMarkdown() {
+      const raw = document.getElementById('md-input').value;
+      // Strip YAML frontmatter for clean body preview
+      const body = raw.replace(/^---[\s\S]*?---\s*/, '');
+
+      const escaped = body
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+      // Code blocks
+      let html = escaped.replace(/```(\w+)?\n([\s\S]*?)```/g, (_, lang, code) => {
+        return `<pre class="p-3 rounded bg-zinc-900 text-zinc-100 font-mono text-xs overflow-x-auto"><code>${code.trim()}</code></pre>`;
+      });
+
+      // Headings, inline code, bold, lists
+      html = html
+        .replace(/^### (.*$)/gim, '<h3 class="text-base font-bold pt-2">$1</h3>')
+        .replace(/^## (.*$)/gim, '<h2 class="text-lg font-bold pt-2">$1</h2>')
+        .replace(/^# (.*$)/gim, '<h1 class="text-xl font-bold">$1</h1>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded bg-zinc-200 dark:bg-zinc-800 font-mono text-xs">$1</code>')
+        .replace(/^\- (.*$)/gim, '<li class="ml-4 list-disc">$1</li>')
+        .replace(/\n\n/g, '</p><p class="pt-2">');
+
+      document.getElementById('md-preview').innerHTML = `<p>${html}</p>`;
+    }
+
+    function downloadMarkdownFile() {
+      const content = document.getElementById('md-input').value;
+      const titleMatch = content.match(/title:\s*"([^"]+)"/);
+      const slug = titleMatch
+        ? titleMatch[1].toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+        : 'new-post';
+      const dateStr = new Date().toISOString().slice(0, 10);
+      const filename = `${dateStr}-${slug}.md`;
+
+      const blob = new Blob([content], { type: 'text/markdown;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast(`Downloaded ${filename}`);
+    }
+
+    // ---------------------------------------------------------
+    // 7. CLIPBOARD & SERVERLESS CONTACT FORM HANDLER
+    // ---------------------------------------------------------
+    function copyText(text, message) {
+      const tempInput = document.createElement('textarea');
+      tempInput.value = text;
+      tempInput.style.position = 'fixed';
+      tempInput.style.opacity = '0';
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      try {
+        document.execCommand('copy');
+        showToast(message || 'Copied!');
+      } catch (err) {
+        showToast('Could not copy text');
+      }
+      document.body.removeChild(tempInput);
+    }
+
+    let toastTimeout;
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const label = document.getElementById('toast-message');
+      label.textContent = msg;
+      toast.classList.remove('opacity-0', 'translate-y-2');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        toast.classList.remove('opacity-100', 'translate-y-0');
+      }, 2600);
+    }
+
+    function handleContactSubmit(event) {
+      event.preventDefault();
+      const name = document.getElementById('sender-name').value.trim();
+      const email = document.getElementById('sender-email').value.trim();
+      const message = document.getElementById('sender-message').value.trim();
+      const status = document.getElementById('form-status');
+
+      // Zero-backend static fallback: prepares a pre-filled mailto dispatch & confirms locally
+      const subject = encodeURIComponent(`Website inquiry from ${name}`);
+      const body = encodeURIComponent(`From: ${name} (${email})\n\n${message}`);
+      
+      status.textContent = 'Ready! Opening default mail client...';
+      showToast('Message formatted for carocci.eugenio@gmail.com');
+
+      setTimeout(() => {
+        window.location.href = `mailto:carocci.eugenio@gmail.com?subject=${subject}&body=${body}`;
+        event.target.reset();
+        status.textContent = 'Prepared via mailto (connect Formspree endpoint ID for silent background delivery).';
+      }, 450);
+    }
+
+    // ---------------------------------------------------------
+    // 8. INITIALIZATION
+    // ---------------------------------------------------------
+    (function init() {
+      renderProjects();
+      filterArticles('All');
+
+      const hash = window.location.hash.replace('#', '');
+      const validViews = ['about', 'experience', 'projects', 'writing', 'contact'];
+      navigateTo(validViews.includes(hash) ? hash : 'about');
+    })();
+  </script>
+</body>
+</html>
